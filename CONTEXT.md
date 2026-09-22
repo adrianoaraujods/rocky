@@ -29,8 +29,8 @@ A note referenced from two or more places in the tree. A clone is not a copy —
 _Avoid_: Symlink, copy, duplicate, alias
 
 **Tag**:
-A Markdown note marked `type: tag`. Other notes tag it with an ordinary wikilink `[[Name]]` — there is no inline `#tag` syntax. A tag note's backlinks are the tagged notes.
-_Avoid_: Label (a label is a custom attribute), embedded tag
+A Markdown note marked with the `tag` frontmatter property (`tag: true`). Other notes tag it with an ordinary wikilink `[[Name]]` — there is no inline `#tag` syntax. A tag note's backlinks are the tagged notes.
+_Avoid_: Label (a label is a custom attribute), embedded tag, "type" (there is no general `type` property; a tag is declared by its own key)
 
 **Folder note**:
 The Markdown file `X/X.md` inside a folder and sharing its name, auto-recognized at index time as that folder's representative (opt-out: `foldernote: false`). `[[X]]` resolves to it.
@@ -49,12 +49,20 @@ A key/value (or key/string-list) field stored in a note's frontmatter, following
 _Avoid_: Property (a reserved property is a key with engine semantics; an attribute is free-form), tag (a tag is a type of note, linked to, not a property)
 
 **Reserved property**:
-A frontmatter key with engine semantics: `title`, `aliases`, `parent`, `type`, `cssclasses`, `foldernote`. Lowercase in the file; rendered capitalized in the properties UI. Reserved keys auto-hide when the properties element is unfocused (a workspace setting), except `aliases`. A key that collides case-insensitively with a reserved property may not be used as an attribute.
+A frontmatter key with engine semantics: `title`, `aliases`, `parent`, `tag`, `cssclasses`, `foldernote`. Lowercase in the file; rendered capitalized in the properties UI. Reserved keys auto-hide when the properties element is unfocused (a workspace setting), except `aliases`. A key that collides case-insensitively with a reserved property may not be used as an attribute.
 _Avoid_: Attribute (see separate entry)
 
 **Vault index**:
-A derived, rebuildable catalog in the `.rocky/` directory that records every file in the vault, the note-name registry, clone edges, and wikilink/path-link edges. The filesystem remains the source of truth; the index is a cache and can be regenerated at any time.
+A derived, rebuildable catalog in the `.rocky/` directory: a flat map of files keyed by vault-relative path (kind, name, timestamps, aliases, clone parents, tag flag, folder-note flag, out-links) plus the note-name/alias registry. The filesystem remains the source of truth; the tree and the backlink inverse are derived in memory, never stored, and the whole index can be regenerated at any time.
 _Avoid_: Database, store (the files are the store), cache
+
+**Kind**:
+The vault index's classification of a file by what it is on disk: `note` (Markdown), `file` (everything else), and later `drawing`/`spreadsheet`/`diagram` for the deferred rich built-ins. A file's kind is derived from its extension; it is unrelated to the frontmatter `tag` property.
+_Avoid_: Type (the word "type" is reserved in the frontmatter vocabulary; kinds are catalog-only)
+
+**Ignore pattern**:
+A user-configured glob in `.rocky/settings.json` (beyond the built-in `.rocky/` and `.git/` excludes) that removes matching paths from the watched set, the catalog, and the tree — an ignored path never appears anywhere in the app.
+_Avoid_: Exclude (kept for the built-in defaults so user patterns read as the general case)
 
 **Tree overlay**:
 The app's view of the vault: the real folder tree illustrated with clone edges injected as extra parents, so clones appear inline in the hierarchy while the disk keeps a single file.
@@ -65,7 +73,7 @@ The link target of a header reference `[[Note#id]]`. Default is an auto-slug of 
 _Avoid_: Anchor (block anchors `^blockid` are out of the contract)
 
 **Workspace setting**:
-A preference scoped to the opened root folder (the vault), not global. Examples: the note-name uniqueness rule, reserved-property auto-hide, capitalized property display.
+A preference scoped to the opened root folder (the vault), not global, stored in `.rocky/settings.json` (authoritative user config, not derived). Examples: the note-name uniqueness rule, ignore patterns, reserved-property auto-hide, capitalized property display, the full-sweep interval, polling mode.
 _Avoid_: Global setting (these are per-vault), config file in `.rocky/` (settings ride in the vault)
 
 ## Architecture

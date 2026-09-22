@@ -27,14 +27,14 @@ A note is a `.md` file whose content must render correctly in the MVP:
 - **Optional.** When present, it is a leading `---`-fenced YAML block before any other content.
 - **Reserved keys** (lowercase in the file — a case-insensitive collision with a reserved key may not be used as a custom attribute):
 
-  | key          | meaning                                                                                                   |
-  | ------------ | --------------------------------------------------------------------------------------------------------- |
-  | `title`      | Display title; overrides the filename in the tree and UI. Never a link target.                            |
-  | `aliases`    | YAML list of alternate link targets. Alias collisions show a disambiguation picker. Never auto-hidden.    |
-  | `parent`     | YAML list of vault-relative folder paths; each entry creates a **clone** of the note under that folder in the tree overlay. Cycles rejected. |
-  | `type`       | `tag` marks a tag note (see §6). Reserved for future typed notes.                                         |
-  | `cssclasses` | YAML list; applied as CSS classes when the note renders (Obsidian-compatible). Loads a custom theme/CSS if present. |
-  | `foldernote` | `foldernote: false` opts a `X/X.md` file out of folder-note recognition (see §7).                        |
+  | key           | meaning                                                                                                  |
+  | ------------- | -------------------------------------------------------------------------------------------------------- |
+  | `title`       | Display title; overrides the filename in the tree and UI. Never a link target.                           |
+  | `aliases`     | YAML list of alternate link targets. Alias collisions show a disambiguation picker. Never auto-hidden.   |
+  | `parent`      | YAML list of vault-relative folder paths; each entry creates a **clone** of the note under that folder in the tree overlay. Cycles rejected. |
+  | `tag`         | `tag: true` marks a tag note (see §6).                                                                   |
+  | `cssclasses`  | YAML list; applied as CSS classes when the note renders (Obsidian-compatible). Loads a custom theme/CSS if present. |
+  | `foldernote`  | `foldernote: false` opts a `X/X.md` file out of folder-note recognition (see §7).                       |
 
 - **Custom attributes**: any other key, Trilium-style key/value or key/list (e.g. `status: done`, `tracking: [a, b]`). The user chooses the casing; anything that is not reserved is metadata.
 - **Display**: the properties UI renders reserved keys capitalized (`Parent`, `CSS Classes`, …). Reserved keys auto-hide unless the properties element is focused; a workspace setting disables the auto-hide, and another disables the capitalized rendering. `aliases` always shows first and is never hidden.
@@ -78,9 +78,9 @@ Supported forms:
 
 ## 6. Tag notes
 
-- A tag is a Markdown note marked `type: tag`.
+- A tag is a Markdown note marked `tag: true` (frontmatter). There is no general `type` property.
 - Other notes tag it with an ordinary wikilink `[[Name]]` — no inline `#tag` syntax.
-- The tag note's backlinks are the tagged notes. Nothing else is special; the `type` mechanism is reserved for future typed notes.
+- The tag note's backlinks are the tagged notes. Nothing else is special.
 
 ## 7. Folder notes
 
