@@ -17,7 +17,7 @@ The identifier of a note, equal to its filename (minus `.md`). Uniqueness across
 _Avoid_: Title (a title is displayed text; a note name is identity), slug
 
 **Title**:
-The `title` frontmatter property, display text that overrides the filename in the tree and UI. A title is never a link target and never part of identity.
+The `title` frontmatter property, display text that overrides the filename in the tree and UI. It is note-level: one `title:` per file, shown at every clone position — you cannot give a clone its own display name. A title is never a link target and never part of identity.
 _Avoid_: Note name (a note name is identity; a title is how it's shown)
 
 **Alias**:
@@ -25,8 +25,12 @@ An additional name a note may expose through the `aliases` frontmatter list. Ali
 _Avoid_: Nickname, synonym
 
 **Clone**:
-A note referenced from two or more places in the tree. A clone is not a copy — the note keeps one identity and one file, and appears under several parents. Clones are expressed as the `parent` frontmatter property (list of folder paths) and/or index edges, never as filesystem symlinks.
+A note that appears in more than one place in the tree: its one **home** (the file's physical path) plus zero or more clone positions declared by the `parent` frontmatter property (list of folder paths). A clone is not a copy — one identity, one file. Clone positions are strictly extra, exist only in the tree overlay, and are never addressed by links or autocomplete.
 _Avoid_: Symlink, copy, duplicate, alias
+
+**Home**:
+The one physical location of a note's file inside the vault — its path on disk. Every note has exactly one home (the vault root is a legal one); clone positions are extra, never homes, and detached notes do not exist. Moving the file re-homes the note (dropping a clone entry that lands where the home moves); deleting the home deletes the file.
+_Avoid_: Canonical position, original location, first clone
 
 **Tag**:
 A Markdown note marked with the `tag` frontmatter property (`tag: true`). Other notes tag it with an ordinary wikilink `[[Name]]` — there is no inline `#tag` syntax. A tag note's backlinks are the tagged notes.
@@ -65,7 +69,7 @@ A user-configured glob in `.rocky/settings.json` (beyond the built-in `.rocky/` 
 _Avoid_: Exclude (kept for the built-in defaults so user patterns read as the general case)
 
 **Tree overlay**:
-The app's view of the vault: the real folder tree illustrated with clone edges injected as extra parents, so clones appear inline in the hierarchy while the disk keeps a single file.
+The app's view of the vault: the real folder tree illustrated with clone edges injected as extra parents, so clones appear inline in the hierarchy (a duplicate badge marks clone positions) while the disk keeps a single file.
 _Avoid_: Virtual tree
 
 **Heading id**:
