@@ -1,0 +1,39 @@
+name: Spec / Decision
+description: Propose a change to the spec or an architecture decision
+labels: [needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rocky is decision-first: ideas become issues, are discussed, and when agreed
+        are captured as an Architecture Decision Record in `docs/adr/` with vocabulary
+        in `CONTEXT.md`. Use this form to propose a spec change or a new decision, and
+        expect to be pushed for precision.
+  - type: textarea
+    id: question
+    attributes:
+      label: The decision to make
+      description: State the question precisely — a decision, not a task.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options considered
+      description: The genuine alternatives and their trade-offs.
+      placeholder: "- A: …\n- B: …"
+    validations:
+      required: true
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Recommendation and why
+    validations:
+      required: false
+  - type: textarea
+    id: ripple
+    attributes:
+      label: Ripple effects
+      description: What existing decisions or ADRs would this change or invalidate?
+    validations:
+      required: false

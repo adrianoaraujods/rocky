@@ -1,0 +1,37 @@
+name: Bug report
+description: Report a problem with Rocky
+labels: [needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Before filing, search the issue tracker for a
+        duplicate and check the latest commit on `main` — it may already be fixed.
+  - type: input
+    id: commit
+    attributes:
+      label: Running against
+      description: Commit SHA you reproduced this with (from the repo you used).
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you do?
+      placeholder: 1. Created a note named X… 2. … 3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include logs, stack traces, or screenshots where relevant.
+    validations:
+      required: true
